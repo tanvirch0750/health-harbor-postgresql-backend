@@ -20,6 +20,8 @@ model Doctor {
   qualification   String
   password        String
   isPasswordReset Boolean @map("is_password_reset")
+  gender          String
+  profileImage    String  @map("profile_image")
 
   specializationId String         @map("specialization_id")
   specialization   Specialization @relation(fields: [specializationId], references: [id])
