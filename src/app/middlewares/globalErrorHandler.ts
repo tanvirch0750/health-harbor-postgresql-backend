@@ -48,7 +48,8 @@ const allErrors = (err: any) => {
     error = handleZodError(error);
   }
 
-  if (err instanceof Prisma.PrismaClientKnownRequestError) error = handleClientError(error);
+  if (err instanceof Prisma.PrismaClientKnownRequestError)
+    error = handleClientError(error);
   if (err instanceof Prisma.PrismaClientValidationError) {
     error = handleValidationErrorDB(error);
   }

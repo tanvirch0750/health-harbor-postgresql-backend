@@ -2,17 +2,6 @@ import { Prisma } from '@prisma/client';
 import { IGenereicErrorMessage } from '../interfaces/errorMessage';
 import ApiError from './ApiError';
 
-// export const handleCastErrorDB = (err: CastError) => {
-//   const errorObj = [
-//     {
-//       path: err.path,
-//       message: `Nothing found with this ${err.value} id`,
-//     },
-//   ];
-//   const message = `Invalid Id`;
-//   return new ApiError(message, httpStatus.NOT_FOUND, errorObj);
-// };
-
 export const handleClientError = (
   error: Prisma.PrismaClientKnownRequestError
 ) => {
@@ -38,6 +27,14 @@ export const handleClientError = (
         },
       ];
     }
+  } else if (error.code === 'P2002') {
+    message = `${error?.meta?.target as string} must be a unique value`;
+    errorObj = [
+      {
+        path: '',
+        message,
+      },
+    ];
   }
 
   return new ApiError(message, statusCode, errorObj);
