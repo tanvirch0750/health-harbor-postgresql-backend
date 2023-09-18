@@ -183,7 +183,7 @@ model Admin {
   email           String
   phoneNumber     String  @map("phone_number")
   password        String
-  role            String
+  role            String  @default("admin")
   isPasswordReset Boolean @map("is_password_reset")
 
   createdAt DateTime @default(now()) @map("created_at")
