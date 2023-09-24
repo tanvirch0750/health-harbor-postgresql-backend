@@ -62,14 +62,14 @@ model Patient {
 }
 
 model MedicalProfile {
-  id               String @id @default(uuid())
-  profilePricture  String @map("profile_pricture")
+  id               String  @id @default(uuid())
+  profilePricture  String? @map("profile_pricture")
   address          String
-  dob              String @map("date_of_birth")
+  dob              String  @map("date_of_birth")
   gender           String
-  medicalHistory   String @map("medical_history")
-  emergencyContact String @map("emergency_contact")
-  profileStatus    String @map("profile_status")
+  medicalHistory   String? @map("medical_history")
+  emergencyContact String  @map("emergency_contact")
+  profileStatus    String  @map("profile_status")
 
   patientId String  @unique() @map("patient_id")
   patient   Patient @relation(fields: [patientId], references: [id])
@@ -117,12 +117,13 @@ model AvailableDoctor {
 }
 
 model AvailableService {
-  id              String   @id @default(uuid())
-  slotDate        DateTime @map("slot_date")
-  availableStatus String   @map("available_status")
-  isBooked        Boolean  @map("is_booked")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id             String   @id @default(uuid())
+  slotDate       DateTime @map("slot_date")
+  availableSeats Int      @map("available_status")
+  isBooked       Boolean  @map("is_booked")
+  fees           String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   serviceId String  @map("service_id")
   service   Service @relation(fields: [serviceId], references: [id])
@@ -151,8 +152,8 @@ model Service {
 }
 
 model TimeSlots {
-  id        String   @id @default(uuid())
-  startTime DateTime @map("start_time")
+  id        String @id @default(uuid())
+  startTime String @unique @map("start_time")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

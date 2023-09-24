@@ -1,4 +1,34 @@
 -- CreateTable
+CREATE TABLE "doctors" (
+    "id" TEXT NOT NULL,
+    "full_name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone_number" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'doctor',
+    "qualification" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "is_password_reset" BOOLEAN NOT NULL,
+    "gender" TEXT NOT NULL,
+    "profile_image" TEXT NOT NULL,
+    "specialization_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "doctors_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "specializations" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "specializations_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "patients" (
     "id" TEXT NOT NULL,
     "full_name" TEXT NOT NULL,
@@ -15,11 +45,11 @@ CREATE TABLE "patients" (
 -- CreateTable
 CREATE TABLE "medical_history" (
     "id" TEXT NOT NULL,
-    "profile_pricture" TEXT NOT NULL,
+    "profile_pricture" TEXT,
     "address" TEXT NOT NULL,
     "date_of_birth" TEXT NOT NULL,
     "gender" TEXT NOT NULL,
-    "medical_history" TEXT NOT NULL,
+    "medical_history" TEXT,
     "emergency_contact" TEXT NOT NULL,
     "profile_status" TEXT NOT NULL,
     "patient_id" TEXT NOT NULL,
@@ -58,8 +88,9 @@ CREATE TABLE "available_doctors" (
 CREATE TABLE "available_services" (
     "id" TEXT NOT NULL,
     "slot_date" TIMESTAMP(3) NOT NULL,
-    "available_status" TEXT NOT NULL,
+    "available_status" INTEGER NOT NULL,
     "is_booked" BOOLEAN NOT NULL,
+    "fees" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "service_id" TEXT NOT NULL,
@@ -83,7 +114,7 @@ CREATE TABLE "services" (
 -- CreateTable
 CREATE TABLE "time_slots" (
     "id" TEXT NOT NULL,
-    "start_time" TIMESTAMP(3) NOT NULL,
+    "start_time" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -110,13 +141,22 @@ CREATE TABLE "admin" (
     "email" TEXT NOT NULL,
     "phone_number" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'admin',
     "is_password_reset" BOOLEAN NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "admin_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "doctors_email_key" ON "doctors"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "doctors_phone_number_key" ON "doctors"("phone_number");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "specializations_name_key" ON "specializations"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "patients_email_key" ON "patients"("email");
@@ -140,7 +180,13 @@ CREATE UNIQUE INDEX "available_services_service_id_available_doctor_id_slot_date
 CREATE UNIQUE INDEX "services_name_key" ON "services"("name");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "time_slots_start_time_key" ON "time_slots"("start_time");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "payment_appointmentId_key" ON "payment"("appointmentId");
+
+-- AddForeignKey
+ALTER TABLE "doctors" ADD CONSTRAINT "doctors_specialization_id_fkey" FOREIGN KEY ("specialization_id") REFERENCES "specializations"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "medical_history" ADD CONSTRAINT "medical_history_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "patients"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
