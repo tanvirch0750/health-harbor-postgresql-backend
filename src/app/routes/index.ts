@@ -1,4 +1,5 @@
 import express from 'express';
+import { availabledoctorRoutes } from '../modules/availableDoctor/availableDoctor.routes';
 import { availableServiceRoutes } from '../modules/availableService/availableService.routes';
 import { doctorRoutes } from '../modules/doctor/doctor.routes';
 import { serviceRoutes } from '../modules/service/service.routes';
@@ -14,6 +15,10 @@ const moduleRoutes = [
   {
     path: '/doctor',
     route: doctorRoutes,
+  },
+  {
+    path: '/available-doctor',
+    route: availabledoctorRoutes,
   },
   {
     path: '/time-slot',
