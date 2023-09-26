@@ -5,41 +5,43 @@ import ApiError from '../../../errors/ApiError';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { serviceFilterableFields } from './service.constant';
-import { ServiceServices } from './service.service';
+import { availableServiceFilterableFields } from './availableService.constant';
+import { AvailableServiceServices } from './availableService.service';
 
 export const insertIntoDB: RequestHandler = catchAsync(async (req, res) => {
   const data = req.body;
-  const result = await ServiceServices.insertIntoDB(data);
+  const result = await AvailableServiceServices.insertIntoDB(data);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     status: 'success',
-    message: 'Service created successfully',
+    message: 'AvailableService created successfully',
     data: result,
   });
 });
 
 export const getAllFromDB: RequestHandler = catchAsync(
   async (req, res, next) => {
-    const filters = pick(req.query, serviceFilterableFields);
+    const filters = pick(req.query, availableServiceFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
 
-    const result = await ServiceServices.getAllFromDB(
+    const result = await AvailableServiceServices.getAllFromDB(
       filters,
       paginationOptions
     );
 
     if (result.data.length === 0) {
-      return next(new ApiError('No Service found!', httpStatus.NOT_FOUND));
+      return next(
+        new ApiError('No AvailableService found!', httpStatus.NOT_FOUND)
+      );
     }
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       status: 'success',
-      message: 'Service retrived successfully',
+      message: 'AvailableService retrived successfully',
       meta: result.meta,
       data: result.data,
     });
@@ -47,11 +49,14 @@ export const getAllFromDB: RequestHandler = catchAsync(
 );
 
 const getDataById: RequestHandler = catchAsync(async (req, res, next) => {
-  const result = await ServiceServices.getDataById(req.params.id);
+  const result = await AvailableServiceServices.getDataById(req.params.id);
 
   if (!result) {
     return next(
-      new ApiError(`No Service found with this id`, httpStatus.NOT_FOUND)
+      new ApiError(
+        `No AvailableService found with this id`,
+        httpStatus.NOT_FOUND
+      )
     );
   }
 
@@ -59,7 +64,7 @@ const getDataById: RequestHandler = catchAsync(async (req, res, next) => {
     statusCode: httpStatus.OK,
     success: true,
     status: 'success',
-    message: 'Service retrived successfully',
+    message: 'AvailableService retrived successfully',
     data: result,
   });
 });
@@ -67,11 +72,17 @@ const getDataById: RequestHandler = catchAsync(async (req, res, next) => {
 const updateDataById: RequestHandler = catchAsync(async (req, res, next) => {
   const payload = req.body;
 
-  const result = await ServiceServices.updateDataById(req.params.id, payload);
+  const result = await AvailableServiceServices.updateDataById(
+    req.params.id,
+    payload
+  );
 
   if (!result) {
     return next(
-      new ApiError(`No Service found with this id`, httpStatus.NOT_FOUND)
+      new ApiError(
+        `No AvailableService found with this id`,
+        httpStatus.NOT_FOUND
+      )
     );
   }
 
@@ -79,17 +90,20 @@ const updateDataById: RequestHandler = catchAsync(async (req, res, next) => {
     statusCode: httpStatus.OK,
     success: true,
     status: 'success',
-    message: 'Service updated successfully',
+    message: 'AvailableService updated successfully',
     data: result,
   });
 });
 
 const deleteDataById: RequestHandler = catchAsync(async (req, res, next) => {
-  const result = await ServiceServices.deleteDataById(req.params.id);
+  const result = await AvailableServiceServices.deleteDataById(req.params.id);
 
   if (!result) {
     return next(
-      new ApiError(`No Service found with this id`, httpStatus.NOT_FOUND)
+      new ApiError(
+        `No AvailableService found with this id`,
+        httpStatus.NOT_FOUND
+      )
     );
   }
 
@@ -97,12 +111,12 @@ const deleteDataById: RequestHandler = catchAsync(async (req, res, next) => {
     statusCode: httpStatus.OK,
     success: true,
     status: 'success',
-    message: 'Service deleted successfully',
+    message: 'AvailableService deleted successfully',
     data: result,
   });
 });
 
-export const ServiceController = {
+export const AvailableServiceController = {
   insertIntoDB,
   getAllFromDB,
   getDataById,

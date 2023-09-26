@@ -1,5 +1,7 @@
 import express from 'express';
+import { availableServiceRoutes } from '../modules/availableService/availableService.routes';
 import { doctorRoutes } from '../modules/doctor/doctor.routes';
+import { serviceRoutes } from '../modules/service/service.routes';
 import { specializationRoutes } from '../modules/specialization/specialization.routes';
 import { timeSlotsRoutes } from '../modules/timeSlots/timeSlots.routes';
 const router = express.Router();
@@ -16,6 +18,14 @@ const moduleRoutes = [
   {
     path: '/time-slot',
     route: timeSlotsRoutes,
+  },
+  {
+    path: '/service',
+    route: serviceRoutes,
+  },
+  {
+    path: '/available-service',
+    route: availableServiceRoutes,
   },
 ];
 
