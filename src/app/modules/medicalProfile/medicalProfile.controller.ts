@@ -5,41 +5,30 @@ import ApiError from '../../../errors/ApiError';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { patientFilterableFields } from './patient.constant';
-import { PatientServices } from './patient.service';
-
-export const insertIntoDB: RequestHandler = catchAsync(async (req, res) => {
-  const { medicalProfile, ...data } = req.body;
-  const result = await PatientServices.insertIntoDB(data, medicalProfile);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    status: 'success',
-    message: 'Patient created successfully',
-    data: result,
-  });
-});
+import { medicalProfileFilterableFields } from './medicalProfile.constant';
+import { MedicalProfileServices } from './medicalProfile.service';
 
 export const getAllFromDB: RequestHandler = catchAsync(
   async (req, res, next) => {
-    const filters = pick(req.query, patientFilterableFields);
+    const filters = pick(req.query, medicalProfileFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
 
-    const result = await PatientServices.getAllFromDB(
+    const result = await MedicalProfileServices.getAllFromDB(
       filters,
       paginationOptions
     );
 
     if (result.data.length === 0) {
-      return next(new ApiError('No Patient found!', httpStatus.NOT_FOUND));
+      return next(
+        new ApiError('No Medical Profile found!', httpStatus.NOT_FOUND)
+      );
     }
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       status: 'success',
-      message: 'Patient retrived successfully',
+      message: 'Medical Profile retrived successfully',
       meta: result.meta,
       data: result.data,
     });
@@ -47,11 +36,14 @@ export const getAllFromDB: RequestHandler = catchAsync(
 );
 
 const getDataById: RequestHandler = catchAsync(async (req, res, next) => {
-  const result = await PatientServices.getDataById(req.params.id);
+  const result = await MedicalProfileServices.getDataById(req.params.id);
 
   if (!result) {
     return next(
-      new ApiError(`No Patient found with this id`, httpStatus.NOT_FOUND)
+      new ApiError(
+        `No Medical Profile found with this id`,
+        httpStatus.NOT_FOUND
+      )
     );
   }
 
@@ -59,7 +51,7 @@ const getDataById: RequestHandler = catchAsync(async (req, res, next) => {
     statusCode: httpStatus.OK,
     success: true,
     status: 'success',
-    message: 'Patient retrived successfully',
+    message: 'Medical Profile retrived successfully',
     data: result,
   });
 });
@@ -67,11 +59,17 @@ const getDataById: RequestHandler = catchAsync(async (req, res, next) => {
 const updateDataById: RequestHandler = catchAsync(async (req, res, next) => {
   const payload = req.body;
 
-  const result = await PatientServices.updateDataById(req.params.id, payload);
+  const result = await MedicalProfileServices.updateDataById(
+    req.params.id,
+    payload
+  );
 
   if (!result) {
     return next(
-      new ApiError(`No Patient found with this id`, httpStatus.NOT_FOUND)
+      new ApiError(
+        `No Medical Profile found with this id`,
+        httpStatus.NOT_FOUND
+      )
     );
   }
 
@@ -79,17 +77,20 @@ const updateDataById: RequestHandler = catchAsync(async (req, res, next) => {
     statusCode: httpStatus.OK,
     success: true,
     status: 'success',
-    message: 'Patient updated successfully',
+    message: 'Medical Profile updated successfully',
     data: result,
   });
 });
 
 const deleteDataById: RequestHandler = catchAsync(async (req, res, next) => {
-  const result = await PatientServices.deleteDataById(req.params.id);
+  const result = await MedicalProfileServices.deleteDataById(req.params.id);
 
   if (!result) {
     return next(
-      new ApiError(`No Patient found with this id`, httpStatus.NOT_FOUND)
+      new ApiError(
+        `No Medical Profile found with this id`,
+        httpStatus.NOT_FOUND
+      )
     );
   }
 
@@ -97,13 +98,12 @@ const deleteDataById: RequestHandler = catchAsync(async (req, res, next) => {
     statusCode: httpStatus.OK,
     success: true,
     status: 'success',
-    message: 'Patient deleted successfully',
+    message: 'Medical Profile deleted successfully',
     data: result,
   });
 });
 
-export const PatientController = {
-  insertIntoDB,
+export const MedicalProfileController = {
   getAllFromDB,
   getDataById,
   updateDataById,

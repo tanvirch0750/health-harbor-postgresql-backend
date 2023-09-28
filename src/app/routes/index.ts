@@ -3,6 +3,8 @@ import { adminRoutes } from '../modules/admin/admin.routes';
 import { availabledoctorRoutes } from '../modules/availableDoctor/availableDoctor.routes';
 import { availableServiceRoutes } from '../modules/availableService/availableService.routes';
 import { doctorRoutes } from '../modules/doctor/doctor.routes';
+import { medicalProfileRoutes } from '../modules/medicalProfile/medicalProfile.routes';
+import { patientRoutes } from '../modules/patient/patient.routes';
 import { paymentRoutes } from '../modules/payment/payment.routes';
 import { serviceRoutes } from '../modules/service/service.routes';
 import { specializationRoutes } from '../modules/specialization/specialization.routes';
@@ -17,6 +19,18 @@ const moduleRoutes = [
   {
     path: '/doctor',
     route: doctorRoutes,
+  },
+  {
+    path: '/patient',
+    route: patientRoutes,
+  },
+  {
+    path: '/medical-profile',
+    route: medicalProfileRoutes,
+  },
+  {
+    path: '/admin',
+    route: adminRoutes,
   },
   {
     path: '/available-doctor',
@@ -34,10 +48,7 @@ const moduleRoutes = [
     path: '/available-service',
     route: availableServiceRoutes,
   },
-  {
-    path: '/admin',
-    route: adminRoutes,
-  },
+
   {
     path: '/payment',
     route: paymentRoutes,

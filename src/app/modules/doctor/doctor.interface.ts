@@ -4,4 +4,5 @@ export type IDoctorFilters = {
   qualification?: string;
   phoneNumber?: string;
   specializationId?: string;
+  gender?: string;
 };
