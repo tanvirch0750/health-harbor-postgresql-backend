@@ -1,6 +1,7 @@
 import express from 'express';
 import { adminRoutes } from '../modules/admin/admin.routes';
 import { appointmentRoutes } from '../modules/appointment/appointment.routes';
+import { authRoutes } from '../modules/auth/auth.routes';
 import { availabledoctorRoutes } from '../modules/availableDoctor/availableDoctor.routes';
 import { availableServiceRoutes } from '../modules/availableService/availableService.routes';
 import { doctorRoutes } from '../modules/doctor/doctor.routes';
@@ -13,6 +14,10 @@ import { timeSlotsRoutes } from '../modules/timeSlots/timeSlots.routes';
 const router = express.Router();
 
 const moduleRoutes = [
+  {
+    path: '/auth',
+    route: authRoutes,
+  },
   {
     path: '/specialization',
     route: specializationRoutes,
